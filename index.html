@@ -1478,8 +1478,9 @@
       </div>
       <button type="submit" class="form-submit" id="submit-btn">Send Enquiry &rarr;</button>
       <div id="form-success" style="display:none; margin-top:24px; padding:28px 32px; border:1px solid rgba(201,168,76,0.4); background:rgba(201,168,76,0.06);">
-        <p style="font-family:Cormorant Garamond,serif; font-size:22px; color:#e2c47a; margin-bottom:10px;">&check; Enquiry Received</p>
-        <p style="font-size:13px; color:#c8bfa8; line-height:1.8;">Thank you for reaching out. We will be in touch within 24-48 hours. A confirmation has been sent to your email.</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:22px; color:#e2c47a; margin-bottom:10px;">&#10003; Enquiry Received</p>
+        <p style="font-size:13px; color:#c8bfa8; line-height:1.8; margin-bottom:24px;">Thank you for reaching out. We will be in touch within 24&#8211;48 hours. A confirmation has been sent to your email.</p>
+        <button onclick="resetForm()" style="padding:14px 32px; background:transparent; border:1px solid rgba(201,168,76,0.4); color:#e2c47a; font-family:'Montserrat',sans-serif; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; cursor:pointer; transition:all 0.3s;" onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='transparent'">Send Another Enquiry</button>
       </div>
     </form>
   </div>
@@ -1625,6 +1626,16 @@
         btn.disabled = false;
       }
     });
+  }
+  function resetForm() {
+    const form = document.getElementById('enquiry-form');
+    const btn = document.getElementById('submit-btn');
+    const success = document.getElementById('form-success');
+    form.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+    success.style.display = 'none';
+    btn.style.display = '';
+    btn.textContent = 'Send Enquiry →';
+    btn.disabled = false;
   }
 </script>
 </body>
