@@ -1435,13 +1435,13 @@
           </div>
           <div>
             <p class="contact-item-label">Email</p>
-            <p class="contact-item-value"><a href=mailto:info@bobsonline.com.au">info@bobsonline.com.au</a></p>
+            <p class="contact-item-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="58303d343437183a34393b33372839343a2d31343c31363f763b373576392d">[email&#160;protected]</a></p>
           </div>
         </div>
       </div>
     </div>
 
-    <form class="contact-form reveal reveal-delay-2" action="https://formspree.io/f/mykbnybe" method="POST">
+    <form class="contact-form reveal reveal-delay-2" id="enquiry-form">
       <div class="form-row">
         <div class="form-group">
           <label>First Name</label>
@@ -1476,7 +1476,11 @@
         <label>Tell Us About Your Project</label>
         <textarea name="message" placeholder="Describe your vision, project scope, or any questions you have..."></textarea>
       </div>
-      <button type="submit" class="form-submit">Send Enquiry →</button>
+      <button type="submit" class="form-submit" id="submit-btn">Send Enquiry &rarr;</button>
+      <div id="form-success" style="display:none; margin-top:24px; padding:28px 32px; border:1px solid rgba(201,168,76,0.4); background:rgba(201,168,76,0.06);">
+        <p style="font-family:Cormorant Garamond,serif; font-size:22px; color:#e2c47a; margin-bottom:10px;">&check; Enquiry Received</p>
+        <p style="font-size:13px; color:#c8bfa8; line-height:1.8;">Thank you for reaching out. We will be in touch within 24-48 hours. A confirmation has been sent to your email.</p>
+      </div>
     </form>
   </div>
 </section>
@@ -1532,7 +1536,7 @@
       <h4>Contact</h4>
       <ul>
         <li><a href="#">Melbourne, VIC</a></li>
-        <li><a href="mailto:info@bobsonline.com.au">info@bobsonline.com.au</a></li>
+        <li><a href="#"><span class="__cf_email__" data-cfemail="acc4c9c0c0c3eccec0cdcfc7c3dccdc0ced9c5c0c8c5c2cb82cfc3c182cdd9">[email&#160;protected]</span></a></li>
         <li><a href="#">+61 420 546 696</a></li>
       </ul>
     </div>
@@ -1593,8 +1597,35 @@
     if (!isOpen) links.style.display = 'flex';
   }
 
-  // ─── Form submit
-
+  // ─── Form submit via AJAX (no redirect)
+  const form = document.getElementById('enquiry-form');
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      const data = new FormData(form);
+      try {
+        const response = await fetch('https://formspree.io/f/mykbnybe', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          form.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+          btn.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          btn.textContent = 'Error — Try Again';
+          btn.disabled = false;
+        }
+      } catch(err) {
+        btn.textContent = 'Error — Try Again';
+        btn.disabled = false;
+      }
+    });
+  }
 </script>
 </body>
 </html>
